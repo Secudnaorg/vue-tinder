@@ -14,7 +14,7 @@
 
 ## Préoccupations et obstacles possibles     -->
 
-## Qui 
+## Who ?
 
 <!-- La startup Gottaphish, dont le président est Thibault Daccord, est chargé de ce projet.  
 Elle recherche au travers de celui-ci à améliorer le domaine des systèmes d'information et à offrir aux équipes informatiques le service qui pourrait leur être le plus pertinent pour les aider à gérer les besoins quotidiens en cybersécurité.
@@ -25,7 +25,7 @@ The project at hand is entrusted to the startup Gottaphish, presided over by Thi
 
 The project relies on the Vue-Tinder application and is designed to educate employees at targeted companies regarding phishing attacks.
 
-## Quoi 
+## What ?
 
 <!-- Le sujet de ce projet est donc le phishing qui est une fraude qui consiste pour le fraudeur à se faire passer pour un organisme qui vous est familier en utilisant son logo et son nom pour inciter les gens à fournir des informations sensible telles que des mots de passe ou des numéro de cartes bancaire.
 
@@ -55,7 +55,7 @@ Decreased productivity
 Damaged reputation
 Disruption of the supply chain.
 
-## Où
+## Where ?
 
 <!-- Ce problèmes ce situe à l'échelle mondiale ainsi que dans plusieurs domaine d'activités.  
 Les secteurs les plus impactés sont : 
@@ -91,14 +91,14 @@ eBay Inc.
 
 *See the 50 most commonly impersonated brands in the world by following [this link](https://www.blogdumoderateur.com/phishing-50-marques-les-plus-usurpees-monde/ "https://www.blogdumoderateur.com/phishing-50-marques-les-plus-usurpees-monde/").*
 
-## Quand
+## When ?
 
 <!-- Le phishing est une cyberattaques qui est présente depuis le milieu des années 1990.  
 Elle a vu le jours lorsqu'un groupe de jeunes a conçu une fonctionnalité de salle de chat sur AOL dans laquelle ils se faisaient passer pour des administrateurs d'AOL. Ils volaient des numéros de carte de crédit à d'autres utilisateurs pour s'assurer qu'ils bénéficieraient toujours d'un accès gratuit à AOL. -->
 
 Phishing is a cyberattack that has been around since the mid-1990s. It originated when a group of young individuals created a chat room feature on AOL, where they posed as AOL administrators. They stole credit card numbers from other users to ensure they would always have free access to AOL.
 
-## Comment
+## How ?
 
 <!-- Le phishing peut se manifester de plusieurs manière possible.  
 Le mode d'opération des fraudeurs est principalement l'usage de mails, mais peut également se manifester par l'utilisation de SMS et d'appels téléphoniques frauduleux dans le but de recueillir les données sensibles des cibles de ces attaques.  
@@ -112,11 +112,11 @@ In each of these attack methods, the fraudster poses as a known entity, such as 
 
 To address this issue, we will be implementing a fun quiz application that will allow users to learn about this cyberattack by identifying fraudulent emails from genuine ones.
 
-## Combien 
+## How much ?
 
 
 
-## Pourquoi 
+## Why ?
 
 <!-- La raison de la mise en place de ce projet est l'ampleur considérable que prend le phishing c'est dernière année, notamment la manière dont les mails frauduleux sont de plus en plus difficile à différencier des légitimes.  
 L'objectif de ce projet et de sensibilisé les personnes aux attaques liées à ce problème. De cette manière, au lieu de chaque année augmenter le nombres d'attaques reçu, dimuner ce chiffres. -->
