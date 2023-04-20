@@ -78,13 +78,13 @@ Malicious actors can gain access to financial benefits from companies operating 
 Cybercriminals can intercept emails and SMS messages used to verify a user's identity through two-factor authentication. Therefore, these phishing attempts can also lead to the compromise of other accounts.
 Furthermore, several well-known brands are commonly impersonated in this cyberattack. At the top of the list, we find:
 
-- PayPal
-- Microsoft
-- DHL
-- Facebook
-- Amazon
-- Apple
-- eBay Inc.
+    - PayPal
+    - Microsoft
+    - DHL
+    - Facebook
+    - Amazon
+    - Apple
+    - eBay Inc.
 
 *See the 50 most commonly impersonated brands in the world by following [this link](https://www.blogdumoderateur.com/phishing-50-marques-les-plus-usurpees-monde/ "https://www.blogdumoderateur.com/phishing-50-marques-les-plus-usurpees-monde/").*
 
