@@ -17,13 +17,10 @@
 ## Who ?
 
 <!-- La startup Gottaphish, dont le président est Thibault Daccord, est chargé de ce projet.  
-Elle recherche au travers de celui-ci à améliorer le domaine des systèmes d'information et à offrir aux équipes informatiques le service qui pourrait leur être le plus pertinent pour les aider à gérer les besoins quotidiens en cybersécurité.
+Elle recherche au travers de ce projet à formez ses collaborateurs ainsi que les particuliers de manière interactive et la les sensibilisé sur les dangers du phishing de manière ludique.  
+Pour ce faire ce projet s'appuie sur l'application existante Vue-Tinder. -->
 
-Ce projet s'appuie sur l'application Vue-Tinder, et est destiner à former les employés de ces entreprises en proie au cyberattaques en termes de phishing. -->
-
-The project at hand is entrusted to the startup Gottaphish, presided over by Thibault Daccord. The aim of this venture is to advance the field of information systems and provide IT teams with the most applicable service to aid in managing their daily cybersecurity requirements.
-
-The project relies on the Vue-Tinder application and is designed to educate employees at targeted companies regarding phishing attacks.
+The startup Gottaphish, whose president is Thibault Daccord, is in charge of this project. Through this project, it aims to train its employees and individuals interactively and raise awareness of the dangers of phishing in a fun way. To achieve this, the project is based on the existing Vue-Tinder application.
 
 ## What ?
 
@@ -41,19 +38,19 @@ Du côté des entreprises, plusieurs conséquences du phishing peuvent être lis
 - Réputation endommagée
 - Perturbation de la chaîne d'approvisionnement -->
 
-The focus of this project is on phishing, a fraudulent scheme where the scammer impersonates a familiar organization, using their logo and name to lure people into divulging sensitive information such as passwords or credit card numbers.
+The subject of this project is phishing, which is a fraud where the perpetrator pretends to be a familiar organization using its logo and name to trick people into providing sensitive information such as passwords or bank card numbers.
 
 In recent years, phishing emails have become increasingly sophisticated and can be hyper-personalized, making them difficult to detect.
 
-Phishing remains the cyberattack that poses the greatest threat to individuals and businesses. During Q3 2022, according to the cybersecurity firm Vade Secure, 203.9 million phishing emails were sent, compared to 155.3 million in the previous quarter.
+Phishing remains the cyber attack that poses the greatest threat to individuals and businesses. In the third quarter of 2022, according to the cybersecurity company Vade Secure, 203.9 million phishing emails were sent, compared to 155.3 million in the previous quarter.
 
-For businesses, the consequences of phishing can be significant, including:
+On the business side, several consequences of phishing can be listed:
 
-Loss of sensitive data
-Financial damages
-Decreased productivity
-Damaged reputation
-Disruption of the supply chain.
+- Loss of sensitive data
+- Financial damages
+- Decreased productivity
+- Damaged reputation
+- Disruption of the supply chain
 
 ## Where ?
 
@@ -75,19 +72,19 @@ les cybercriminels via leurs attaques de phishing peuvent intercepter les e-mail
 
 This issue is global in scale and affects various industries. The most impacted sectors are:
 
-Finance:
+- Finance:
 Malicious actors can gain access to financial benefits from companies operating in the banking, email, social media, and telephone sectors.
-Technology and telecommunications:
+- Technology and telecommunications:
 Cybercriminals can intercept emails and SMS messages used to verify a user's identity through two-factor authentication. Therefore, these phishing attempts can also lead to the compromise of other accounts.
 Furthermore, several well-known brands are commonly impersonated in this cyberattack. At the top of the list, we find:
 
-PayPal
-Microsoft
-DHL
-Facebook
-Amazon
-Apple
-eBay Inc.
+- PayPal
+- Microsoft
+- DHL
+- Facebook
+- Amazon
+- Apple
+- eBay Inc.
 
 *See the 50 most commonly impersonated brands in the world by following [this link](https://www.blogdumoderateur.com/phishing-50-marques-les-plus-usurpees-monde/ "https://www.blogdumoderateur.com/phishing-50-marques-les-plus-usurpees-monde/").*
 
