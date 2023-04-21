@@ -17,10 +17,10 @@
 ## Who ?
 
 <!-- La startup Gottaphish, dont le président est Thibault Daccord, est chargé de ce projet.  
-Elle recherche au travers de ce projet à formez ses collaborateurs ainsi que les particuliers de manière interactive et la les sensibilisé sur les dangers du phishing de manière ludique.  
-Pour ce faire ce projet s'appuie sur l'application existante Vue-Tinder. -->
+Elle recherche au travers de ce projet à formez ses collaborateurs ainsi que les particuliers de manière interactive et à les sensibilisé sur les dangers du phishing de manière ludique.  
+Pour ce faire ce projet s'appuie sur l'application existante Vue-Tinder et a pour but de la modifier sous la forme d'un quiz. -->
 
-The startup Gottaphish, whose president is Thibault Daccord, is in charge of this project. Through this project, it aims to train its employees and individuals interactively and raise awareness of the dangers of phishing in a fun way. To achieve this, the project is based on the existing Vue-Tinder application.
+The startup Gottaphish, whose president is Thibault Daccord, is in charge of this project. Through this project, it aims to train its employees and individuals interactively and raise awareness of the dangers of phishing in a fun way. To achieve this, the project is based on the existing Vue-Tinder application and aims to modify it in the form of a quiz.
 
 ## What ?
 
