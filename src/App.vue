@@ -1,21 +1,19 @@
 <template>
   <div id="app">
-    <Tinder
-      ref="tinder"
-      key-name="id"
-      :queue.sync="queue"
-      :max="3"
-      :offset-y="10"
-      allow-down
-      @submit="onSubmit"
-    >
-      <template slot-scope="scope">
-        <div
-          class="pic"
-          :style="{
+    <Tinder ref="tinder" key-name="id" :queue.sync="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
+      <!-- <template slot-scope="scope"> -->
+        <template slot-scope="scope">
+        <!-- <div class="pic" :style="{
             'background-image': `url(https://cn.bing.com//th?id=OHR.${scope.data.id}_UHD.jpg&pid=hp&w=720&h=1280&rs=1&c=4&r=0)`
-          }"
-        />
+          }" /> -->
+
+          <iframe 
+            src=https://chris-973.github.io/iframe/1.html
+            frameborder="0"
+            style="width: 100%;height: 100%;"
+            scrolling="no"
+          >
+          </iframe>
       </template>
       <img class="like-pointer" slot="like" src="~img/like-txt.png" />
       <img class="nope-pointer" slot="nope" src="~img/nope-txt.png" />
@@ -36,14 +34,26 @@
 <script>
 import Tinder from '@/components/vue-tinder/Tinder.vue'
 import source from '@/bing'
-
+import axios from 'axios';
 export default {
   name: 'App',
   components: { Tinder },
+  mounted() {
+    // permet de récupérer les données du fichiers JSON grâce à axios et les mettre dans la variable JSONDATA
+    axios.get('../mails.json')
+      .then(response => {
+        console.log(response)
+        this.jsonData = response.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
   data: () => ({
     queue: [],
     offset: 0,
-    history: []
+    history: [],
+    jsonData: []
   }),
   created() {
     this.mock()
@@ -173,6 +183,7 @@ body {
   height: 100%;
   background-size: cover;
   background-position: center;
+  /* pointer-events: none; Permet d'ignorer le clic sur l'iframe */
 }
 
 .btns {
