@@ -1,19 +1,46 @@
 <template>
   <div id="app">
-    <Tinder ref="tinder" key-name="id" :queue.sync="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
-      <!-- <template slot-scope="scope"> -->
-        <template slot-scope="scope">
-        <!-- <div class="pic" :style="{
-            'background-image': `url(https://cn.bing.com//th?id=OHR.${scope.data.id}_UHD.jpg&pid=hp&w=720&h=1280&rs=1&c=4&r=0)`
-          }" /> -->
-
-          <iframe 
-            src=https://chris-973.github.io/iframe/1.html
-            frameborder="0"
-            style="width: 100%;height: 100%;"
-            scrolling="no"
-          >
-          </iframe>
+    <Tinder
+      ref="tinder"
+      key-name="id"
+      :queue.sync="queue"
+      :max="3"
+      :offset-y="10"
+      allow-down
+      @submit="onSubmit"
+    >
+      <template slot-scope="scope">
+        <div class="Tinder">
+          <div class="left">
+            <div class="arrow animated bounce">
+              <svg height="18" width="32">
+                <polyline
+                  points="0,0 16,17 32,0"
+                  style="fill:none;stroke:#212121;stroke-width:3"
+                />
+              </svg>
+            </div>
+          </div>
+          <div class="iframe">
+            <iframe
+              :src="scope.data.iframeUrl"
+              frameborder="0"
+              style="width: 100%;height: 100%;"
+              scrolling="no"
+            >
+            </iframe>
+          </div>
+          <div class="right">
+            <div class="arrow animated bounce">
+              <svg height="18" width="32">
+                <polyline
+                  points="0,0 16,17 32,0"
+                  style="fill:none;stroke:#212121;stroke-width:3"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
       </template>
       <img class="like-pointer" slot="like" src="~img/like-txt.png" />
       <img class="nope-pointer" slot="nope" src="~img/nope-txt.png" />
@@ -34,48 +61,36 @@
 <script>
 import Tinder from '@/components/vue-tinder/Tinder.vue'
 import source from '@/bing'
-import axios from 'axios';
+
 export default {
   name: 'App',
   components: { Tinder },
-  mounted() {
-    // permet de récupérer les données du fichiers JSON grâce à axios et les mettre dans la variable JSONDATA
-    axios.get('../mails.json')
-      .then(response => {
-        console.log(response)
-        this.jsonData = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  },
   data: () => ({
-    queue: [],
+    queue: [
+      { id: 1, iframeUrl: 'https://chris-973.github.io/iframe/1.html' },
+      { id: 2, iframeUrl: 'https://chris-973.github.io/iframe/2.html' },
+      { id: 3, iframeUrl: 'https://chris-973.github.io/iframe/3.html' }
+    ],
     offset: 0,
-    history: [],
-    jsonData: []
+    history: []
   }),
   created() {
     this.mock()
   },
   methods: {
-    mock(count = 5, append = true) {
-      const list = []
-      for (let i = 0; i < count; i++) {
-        list.push({ id: source[this.offset] })
-        this.offset++
+    onSubmit({ /* item */ data }) {
+      if (this.queue.length > 0) {
+        // Vérifie si la file d'attente est non vide
+        const idx = this.queue.findIndex(item => item.id === data.id)
+
+        if (this.queue.length < 3) {
+          this.queue.splice(idx, 1) // Supprime l'élément swipé
+        }
+        this.history.push({
+          id: this.queue.length + 1,
+          iframeUrl: this.getNextIframeUrl()
+        })
       }
-      if (append) {
-        this.queue = this.queue.concat(list)
-      } else {
-        this.queue.unshift(...list)
-      }
-    },
-    onSubmit({ item }) {
-      if (this.queue.length < 3) {
-        this.mock()
-      }
-      this.history.push(item)
     },
     async decide(choice) {
       if (choice === 'rewind') {
@@ -127,10 +142,39 @@ body {
   right: 0;
   top: 23px;
   margin: auto;
-  width: calc(100% - 20px);
+  width: 1000px;
   height: calc(100% - 23px - 65px - 47px - 16px);
   min-width: 300px;
-  max-width: 355px;
+  /* max-width: 355px; */
+}
+
+.Tinder {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  /* background-color: blue; */
+}
+
+.left {
+  transform: rotate(90deg);
+}
+
+.right {
+  transform: rotate(-90deg);
+}
+
+.left,
+.right {
+  width: 100px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iframe {
+  width: 750px;
 }
 
 .nope-pointer,
@@ -148,6 +192,48 @@ body {
 
 .like-pointer {
   left: 10px;
+}
+
+/* Animated arrow */
+
+.bounce {
+  -webkit-animation-name: bounce;
+  -moz-animation-name: bounce;
+  -o-animation-name: bounce;
+  animation-name: bounce;
+}
+.animated {
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  -ms-animation-fill-mode: both;
+  -o-animation-fill-mode: both;
+
+  animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+
+  animation-fill-mode: both;
+  -webkit-animation-duration: 2s;
+  -moz-animation-duration: 2s;
+  -ms-animation-duration: 2s;
+  -o-animation-duration: 2s;
+  animation-duration: 2s;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
 }
 
 .super-pointer,
@@ -183,7 +269,6 @@ body {
   height: 100%;
   background-size: cover;
   background-position: center;
-  /* pointer-events: none; Permet d'ignorer le clic sur l'iframe */
 }
 
 .btns {
