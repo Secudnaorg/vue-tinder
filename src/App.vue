@@ -10,7 +10,7 @@
       @submit="onSubmit"
     >
       <template slot-scope="scope">
-        <div class="Tinder">
+        <div class="pic">
           <div class="left">
             <div class="arrow animated bounce">
               <svg height="18" width="32">
@@ -21,9 +21,10 @@
               </svg>
             </div>
           </div>
+
           <div class="iframe">
             <iframe
-              :src="scope.data.iframeUrl"
+              :src="scope.data.url"
               frameborder="0"
               style="width: 100%;height: 100%;"
               scrolling="no"
@@ -60,40 +61,80 @@
 
 <script>
 import Tinder from '@/components/vue-tinder/Tinder.vue'
-import source from '@/bing'
+import axios from 'axios'
+// import source from '@/bing'
 
 export default {
   name: 'App',
   components: { Tinder },
   data: () => ({
-    queue: [
-      { id: 1, iframeUrl: 'https://chris-973.github.io/iframe/1.html' },
-      { id: 2, iframeUrl: 'https://chris-973.github.io/iframe/2.html' },
-      { id: 3, iframeUrl: 'https://chris-973.github.io/iframe/3.html' }
-    ],
+    queue: [],
     offset: 0,
     history: []
   }),
+  /**
+   * created() est une méthode appelé à la création du composant
+   * (btw elle peux elle même appelé des méthodes pour par exemple ajoutez des items à la queue)
+   */
   created() {
-    this.mock()
+    // Permet de récupérer les données du fichiers JSON grâce à axios
+    axios
+      .get('../mails.json')
+      .then(response => {
+        const items = response.data
+        this.queue = this.queue.concat(items)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+    /* Appel de la méthode addToQueue() pour ajouter les items à la queue
+      this.addToQueue([
+        { id: 1, iframeUrl: 'https://chris-973.github.io/iframe/1.html' },
+        { id: 2, iframeUrl: 'https://chris-973.github.io/iframe/2.html' },
+        { id: 3, iframeUrl: 'https://chris-973.github.io/iframe/3.html' }
+      ])
+    */
   },
   methods: {
-    onSubmit({ /* item */ data }) {
-      if (this.queue.length > 0) {
-        // Vérifie si la file d'attente est non vide
-        const idx = this.queue.findIndex(item => item.id === data.id)
+    /** permet d'ajouter des items à la queue
+     *
+     * @param {*} items // les items à ajouter à la queue
+     
+    addToQueue(items) {
+      this.queue.push(...items)
+    },
+    */
 
-        if (this.queue.length < 3) {
-          this.queue.splice(idx, 1) // Supprime l'élément swipé
-        }
-        this.history.push({
-          id: this.queue.length + 1,
-          iframeUrl: this.getNextIframeUrl()
-        })
+    /** Méthode qui génère des élément pour remplir la queue du composant Tinder
+    
+    mock(count = 5, append = true) {
+      const list = []
+      for (let i = 0; i < count; i++) {
+        list.push({ id: source[this.offset] })
+        this.offset++
+      }
+      if (append) {
+        this.queue = this.queue.concat(list)
+      } else {
+        this.queue.unshift(...list)
       }
     },
-    async decide(choice) {
-      if (choice === 'rewind') {
+    */
+
+    onSubmit({ item }) {
+      // if (this.queue.length < 3) {
+      //   this.mock()
+      // }
+      this.history.push(item)
+    },
+    /* cette manière de faire ne fonctionne pas encore
+       TODO : ajouter les méthode like et dislike pour le swipe à droite et à gauche
+
+    async decide(choice){
+      if(choice === 'rewind') {
+        console.log('précédent email')
+
         if (this.history.length) {
           //一个个 rewind
           // this.$refs.tinder.rewind([this.history.pop()])
@@ -113,8 +154,43 @@ export default {
           // this.queue.unshift(this.history.pop())
           // this.queue.unshift(...this.history)
         }
+      }
+
+      if(choice === 'nope') {
+        console.log('c\'est un mail de phishing')
+        this.$refs.tinder.dislike()
+      }
+
+      if(choice === 'like') {
+        console.log('c\'est un véritable email')
+        this.$refs.tinder.like()
+      }
+    }
+    */
+
+    async decide(choice) {
+      if (choice === 'rewind') {
+        if (this.history.length) {
+          //一个个 rewind
+          // this.$refs.tinder.rewind([this.history.pop()])
+          // 一次性 rewind 全部
+          // this.$refs.tinder.rewind(this.history)
+          // this.history = []
+          // 一次随机 rewind 多个
+          this.$refs.tinder.rewind(
+            this.history.splice(-Math.ceil(Math.random()))
+          )
+          // 非 api调用的添加
+          // this.queue.unshift(this.history.pop())
+          // this.queue.push(this.history.pop())
+          // 非头部添加
+          // this.queue.splice(1, 0, this.history.pop())
+          // 一次性 rewind 多个，并且含有非头部添加的 item
+          // this.queue.unshift(this.history.pop())
+          // this.queue.unshift(...this.history)
+        }
       } else if (choice === 'help') {
-        //
+        console.log('tu veux un indice ?')
       } else {
         this.$refs.tinder.decide(choice)
       }
@@ -142,18 +218,10 @@ body {
   right: 0;
   top: 23px;
   margin: auto;
-  width: 1000px;
+  width: 900px;
   height: calc(100% - 23px - 65px - 47px - 16px);
   min-width: 300px;
-  /* max-width: 355px; */
-}
-
-.Tinder {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  /* background-color: blue; */
+  /* max-width: 600px; */
 }
 
 .left {
@@ -166,32 +234,17 @@ body {
 
 .left,
 .right {
-  width: 100px;
-  height: 100%;
   display: flex;
   align-items: center;
+  width: 150px;
   justify-content: center;
 }
 
 .iframe {
-  width: 750px;
-}
-
-.nope-pointer,
-.like-pointer {
-  position: absolute;
-  z-index: 1;
-  top: 20px;
-  width: 64px;
-  height: 64px;
-}
-
-.nope-pointer {
-  right: 10px;
-}
-
-.like-pointer {
-  left: 10px;
+  /* background-color: red; */
+  border-left: 1px solid #111;
+  border-right: 1px solid #111;
+  width: 100%;
 }
 
 /* Animated arrow */
@@ -236,6 +289,23 @@ body {
   }
 }
 
+.nope-pointer,
+.like-pointer {
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  width: 64px;
+  height: 64px;
+}
+
+.nope-pointer {
+  right: 10px;
+}
+
+.like-pointer {
+  left: 10px;
+}
+
 .super-pointer,
 .down-pointer {
   position: absolute;
@@ -269,6 +339,7 @@ body {
   height: 100%;
   background-size: cover;
   background-position: center;
+  display: flex;
 }
 
 .btns {
@@ -325,4 +396,10 @@ body {
     transform: rotateY(-8deg);
   }
 } */
+
+@media screen and (max-width: 768px) {
+  #app .vue-tinder {
+    width: 800px;
+  }
+}
 </style>
