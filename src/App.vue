@@ -1,16 +1,21 @@
 <template>
   <div id="app">
-    <Tinder
-      ref="tinder"
-      key-name="id"
-      :queue.sync="queue"
-      :max="3"
-      :offset-y="10"
-      allow-down
-      @submit="onSubmit"
-    >
-      <template slot-scope="scope">
+    <div key="1" v-if="ok">
+
+      <Tinder
+        ref="tinder"
+        key-name="emailId"
+        :queue.sync="queue"
+        :max="3"
+        :offset-y="10"
+        allow-down
+        @submit="onSubmit"
+      >
+
+      <template slot-scope="email">
+
         <div class="pic">
+          
           <div class="left">
             <div class="arrow animated bounce">
               <svg height="18" width="32">
@@ -24,13 +29,14 @@
 
           <div class="iframe">
             <iframe
-              :src="scope.data.url"
+              :src="email.data.emailUrl"
               frameborder="0"
               style="width: 100%;height: 100%;"
               scrolling="no"
             >
             </iframe>
           </div>
+
           <div class="right">
             <div class="arrow animated bounce">
               <svg height="18" width="32">
@@ -40,7 +46,9 @@
                 />
               </svg>
             </div>
+
           </div>
+
         </div>
       </template>
       <img class="like-pointer" slot="like" src="~img/like-txt.png" />
@@ -56,6 +64,20 @@
       <img src="~img/like.png" @click="decide('like')" />
       <img src="~img/help.png" @click="decide('help')" />
     </div>
+    </div>
+
+    <div v-else style="color: white;">
+
+      <h1>Result list of the Quiz : </h1>
+
+      <div v-for="email in emails" :key="email.id">
+        <h3>ID of the email : {{ email.emailId }}</h3>
+        <h3>Name of the email : {{ email.emailName }}</h3>
+        <h3>Url of the email : {{ email.emailUrl }}</h3>
+        <h3>Is that a phishing email ? : {{ email.isPhishing }}</h3> 
+        <h3>Your answer : {{ email }}</h3><br><br>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -68,107 +90,76 @@ export default {
   name: 'App',
   components: { Tinder },
   data: () => ({
+    count: 3,
     queue: [],
+    emails: [],
     offset: 0,
-    history: []
-  }),
-  /**
-   * created() est une méthode appelé à la création du composant
-   * (btw elle peux elle même appelé des méthodes pour par exemple ajoutez des items à la queue)
-   */
-  created() {
-    // Permet de récupérer les données du fichiers JSON grâce à axios
-    axios
-      .get('../mails.json')
-      .then(response => {
-        const items = response.data
-        this.queue = this.queue.concat(items)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    history: [],
+    ok: true,
 
-    /* Appel de la méthode addToQueue() pour ajouter les items à la queue
-      this.addToQueue([
-        { id: 1, iframeUrl: 'https://chris-973.github.io/iframe/1.html' },
-        { id: 2, iframeUrl: 'https://chris-973.github.io/iframe/2.html' },
-        { id: 3, iframeUrl: 'https://chris-973.github.io/iframe/3.html' }
-      ])
-    */
+  }),
+
+  created() {
+    this.mock()
   },
   methods: {
-    /** permet d'ajouter des items à la queue
-     *
-     * @param {*} items // les items à ajouter à la queue
-     
-    addToQueue(items) {
-      this.queue.push(...items)
-    },
-    */
 
-    /** Méthode qui génère des élément pour remplir la queue du composant Tinder
-    
-    mock(count = 5, append = true) {
+    mock() {
       const list = []
-      for (let i = 0; i < count; i++) {
-        list.push({ id: source[this.offset] })
-        this.offset++
-      }
-      if (append) {
-        this.queue = this.queue.concat(list)
-      } else {
-        this.queue.unshift(...list)
-      }
+
+      axios
+        .get('mails.json')
+        .then(response => {
+          for(let i = 0; i < this.count; i++) {
+            list.push({
+              emailId: response.data[this.offset].id,
+              emailName: response.data[this.offset].name,
+              emailUrl: response.data[this.offset].url,
+              isPhishing: response.data[this.offset].phishing,
+              error: response.data[this.offset].error
+            })
+
+            this.offset++
+          }
+
+          this.queue = this.queue.concat(list);
+          this.emails = this.emails.concat(list);
+
+          this.offset = 0;
+
+          this.emails['result'] = 0;
+          this.emails['total'] = 0;
+
+        }).catch(error => { console.log(error); });
     },
-    */
 
     onSubmit({ item }) {
-      // if (this.queue.length < 3) {
-      //   this.mock()
+
+      if(this.queue.length == 0){ 
+        this.ok = false; 
+      }
+
+      // switch(this.movies[this.offset]['user_rating']){
+      //   case 'nope':
+      //     console.log('nope');
+      //     break;
+
+      //   case 'super':
+      //     console.log('super');
+      //     break;
+
+      //   case 'like':
+      //     console.log('like');
+      //     break;
       // }
-      this.history.push(item)
+
+      this.offset++;
+
     },
-    /* cette manière de faire ne fonctionne pas encore
-       TODO : ajouter les méthode like et dislike pour le swipe à droite et à gauche
-
-    async decide(choice){
-      if(choice === 'rewind') {
-        console.log('précédent email')
-
-        if (this.history.length) {
-          //一个个 rewind
-          // this.$refs.tinder.rewind([this.history.pop()])
-          // 一次性 rewind 全部
-          // this.$refs.tinder.rewind(this.history)
-          // this.history = []
-          // 一次随机 rewind 多个
-          this.$refs.tinder.rewind(
-            this.history.splice(-Math.ceil(Math.random() * 3))
-          )
-          // 非 api调用的添加
-          // this.queue.unshift(this.history.pop())
-          // this.queue.push(this.history.pop())
-          // 非头部添加
-          // this.queue.splice(1, 0, this.history.pop())
-          // 一次性 rewind 多个，并且含有非头部添加的 item
-          // this.queue.unshift(this.history.pop())
-          // this.queue.unshift(...this.history)
-        }
-      }
-
-      if(choice === 'nope') {
-        console.log('c\'est un mail de phishing')
-        this.$refs.tinder.dislike()
-      }
-
-      if(choice === 'like') {
-        console.log('c\'est un véritable email')
-        this.$refs.tinder.like()
-      }
-    }
-    */
 
     async decide(choice) {
+      this.cpt = 0
+
       if (choice === 'rewind') {
         if (this.history.length) {
           //一个个 rewind
@@ -192,8 +183,21 @@ export default {
       } else if (choice === 'help') {
         console.log('tu veux un indice ?')
       } else {
+
         this.$refs.tinder.decide(choice)
+
+        if(choice === 'like') {
+          this.emails[this.offset]['user_rating'] = "like"
+          console.log(this.emails[this.offset]);
+        } else if(choice === 'nope') {
+          this.emails[this.offset]['user_rating'] = "nope"
+          console.log(this.emails[this.offset]);
+        } else if(choice === 'super') {
+          this.emails[this.offset]['user_rating'] = "super"
+          console.log(this.emails[this.offset]);
+        }
       }
+    
     }
   }
 }

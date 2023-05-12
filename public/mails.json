@@ -1,17 +1,23 @@
 [
     {
         "id": 1,
+        "name": "",
         "url": "https://chris-973.github.io/iframe/1",
-        "phishing": false
+        "phishing": false,
+        "error" : ""
     },
     {
         "id": 2,
+        "name": "",
         "url": "https://chris-973.github.io/iframe/2",
-        "phishing": true
+        "phishing": true,
+        "error" : ""
     },
     {
         "id": 3,
+        "name": "",
         "url": "https://chris-973.github.io/iframe/3",
-        "phishing": true
+        "phishing": true,
+        "error" : ""
     }
 ]
