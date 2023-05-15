@@ -57,6 +57,7 @@
       <img class="down-pointer" slot="down" src="~img/down-txt.png" />
       <img class="rewind-pointer" slot="rewind" src="~img/rewind-txt.png" />
     </Tinder>
+
     <div class="btns">
       <img src="~img/rewind.png" @click="decide('rewind')" />
       <img src="~img/nope.png" @click="decide('nope')" />
@@ -75,7 +76,7 @@
         <h3>Name of the email : {{ email.emailName }}</h3>
         <h3>Url of the email : {{ email.emailUrl }}</h3>
         <h3>Is that a phishing email ? : {{ email.isPhishing }}</h3> 
-        <h3>Your answer : {{ email }}</h3><br><br>
+        <h3>Your answer : {{ email.user_rating }}</h3><br><br>
       </div>
     </div>
   </div>
@@ -90,13 +91,13 @@ export default {
   name: 'App',
   components: { Tinder },
   data: () => ({
-    count: 3,
+    JSONPath: 'mails.json',
+    count: 0, // var utiliser pour stocker la tailler du tableau data quand on récupère les données du fichier JSON
     queue: [],
     emails: [],
-    offset: 0,
+    offset: 0, // cmpt globale
     history: [],
-    ok: true,
-
+    ok: true // bool pour afficher les resultats du quiz
   }),
 
   created() {
@@ -104,99 +105,114 @@ export default {
   },
   methods: {
 
+    /**
+     * Permet de récupérer les données d'un fichier JSON et de les ajoutés à une liste 
+     */
     mock() {
       const list = []
 
       axios
-        .get('mails.json')
+        .get(this.JSONPath)
         .then(response => {
+
+          this.count = response.data.length;
+
           for(let i = 0; i < this.count; i++) {
             list.push({
               emailId: response.data[this.offset].id,
               emailName: response.data[this.offset].name,
               emailUrl: response.data[this.offset].url,
               isPhishing: response.data[this.offset].phishing,
-              error: response.data[this.offset].error
+              error: response.data[this.offset].error,
             })
 
             this.offset++
+            
           }
 
-          this.queue = this.queue.concat(list);
-          this.emails = this.emails.concat(list);
+          this.queue = this.queue.concat(list)
+          this.emails = this.emails.concat(list)
 
-          this.offset = 0;
+          this.offset = 0
 
-          this.emails['result'] = 0;
-          this.emails['total'] = 0;
-
-        }).catch(error => { console.log(error); });
+        }).catch(error => { console.log(error); })
     },
 
-    onSubmit({ item }) {
+    /**
+     * Permet de gérer la soumission de l'item afficher sur le composant Tinder
+     * 
+     * @param {*} item : le mail en tête de liste 
+     */
+    onSubmit(item) {
 
-      if(this.queue.length == 0){ 
+      /*
+        Permet d'afficher les resultats si la queue est vide
+      */
+      if(this.queue.length === 0){ 
         this.ok = false; 
       }
 
-      // switch(this.movies[this.offset]['user_rating']){
-      //   case 'nope':
-      //     console.log('nope');
-      //     break;
+      this.emails[this.offset]['user_rating'] = item['type'] // ajoute le choix de l'utilisateur à l'item de la liste
 
-      //   case 'super':
-      //     console.log('super');
-      //     break;
+      if(this.emails[this.offset].user_rating === 'super') { this.emails[this.offset].user_rating = this.randRating() }
 
-      //   case 'like':
-      //     console.log('like');
-      //     break;
-      // }
+      this.history.push(item.item)
 
-      this.offset++;
-
+      this.offset++
     },
 
+    /*
+      Choisit aléatoirement un des strings entre : like et nope
+    */
+    randRating() {
+      const rating = Math.floor(Math.random() * 2) === 0
+      return rating ? "like" : "nope"
+    },
+
+    /**
+     * Permet de gérer le choix de l'utilisateur 
+     * Ajoute le choix de l'utilisateur à la liste des emails
+     * 
+     * @param {*} choice : le choix de l'utilisateur
+     */
     async decide(choice) {
-      this.cpt = 0
 
       if (choice === 'rewind') {
+
         if (this.history.length) {
-          //一个个 rewind
-          // this.$refs.tinder.rewind([this.history.pop()])
-          // 一次性 rewind 全部
-          // this.$refs.tinder.rewind(this.history)
-          // this.history = []
-          // 一次随机 rewind 多个
-          this.$refs.tinder.rewind(
-            this.history.splice(-Math.ceil(Math.random()))
-          )
-          // 非 api调用的添加
-          // this.queue.unshift(this.history.pop())
-          // this.queue.push(this.history.pop())
-          // 非头部添加
-          // this.queue.splice(1, 0, this.history.pop())
-          // 一次性 rewind 多个，并且含有非头部添加的 item
-          // this.queue.unshift(this.history.pop())
-          // this.queue.unshift(...this.history)
+          this.$refs.tinder.rewind(this.history.splice(-Math.ceil(Math.random()))) // rewind la queue des emails afficher de 1
         }
+
+        /* Métode rewind de base
+
+          // Si l'historique n'est pas vide alors on reviens sur le mail précédent
+          if (this.history.length) {
+            //一个个 rewind
+            // this.$refs.tinder.rewind([this.history.pop()])
+            // 一次性 rewind 全部
+            // this.$refs.tinder.rewind(this.history)
+            // this.history = []
+            // 一次随机 rewind 多个
+            this.$refs.tinder.rewind(
+              this.history.splice(-Math.ceil(Math.random() * 3 ))
+            )
+            // 非 api调用的添加
+            // this.queue.unshift(this.history.pop())
+            // this.queue.push(this.history.pop())
+            // 非头部添加
+            // this.queue.splice(1, 0, this.history.pop())
+            // 一次性 rewind 多个，并且含有非头部添加的 item
+            // this.queue.unshift(this.history.pop())
+            // this.queue.unshift(...this.history)
+          }
+
+        */
+
       } else if (choice === 'help') {
         console.log('tu veux un indice ?')
       } else {
-
         this.$refs.tinder.decide(choice)
-
-        if(choice === 'like') {
-          this.emails[this.offset]['user_rating'] = "like"
-          console.log(this.emails[this.offset]);
-        } else if(choice === 'nope') {
-          this.emails[this.offset]['user_rating'] = "nope"
-          console.log(this.emails[this.offset]);
-        } else if(choice === 'super') {
-          this.emails[this.offset]['user_rating'] = "super"
-          console.log(this.emails[this.offset]);
-        }
-      }
+      } 
     
     }
   }
@@ -212,7 +228,7 @@ body {
 body {
   margin: 0;
   background-color: #20262e;
-  overflow: hidden;
+  overflow: auto;
 }
 
 #app .vue-tinder {
