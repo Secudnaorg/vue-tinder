@@ -29,10 +29,11 @@
 
           <div class="iframe">
             <iframe
+              class="iframeCart"
               :src="email.data.emailUrl"
               frameborder="0"
               style="width: 100%;height: 100%;"
-              scrolling="no"
+              scrolling="yes"
             >
             </iframe>
           </div>
@@ -51,11 +52,11 @@
 
         </div>
       </template>
-      <img class="like-pointer" slot="like" src="~img/like-txt.png" />
-      <img class="nope-pointer" slot="nope" src="~img/nope-txt.png" />
+      <img class="like-pointer" slot="like" src="./assets/like-txt.png" />
+      <img class="nope-pointer" slot="nope" src="./assets/nope-txt.png" />
       <img class="super-pointer" slot="super" src="~img/super-txt.png" />
       <img class="down-pointer" slot="down" src="~img/down-txt.png" />
-      <img class="rewind-pointer" slot="rewind" src="~img/rewind-txt.png" />
+      <img class="rewind-pointer" slot="rewind" src="./assets/super-txt.png" />
     </Tinder>
 
     <div class="btns">
@@ -67,18 +68,38 @@
     </div>
     </div>
 
-    <div v-else style="color: white;">
+    <div class="result" v-else>
 
       <h1>Result list of the Quiz : </h1>
 
       <div v-for="email in emails" :key="email.id">
-        <h3>ID of the email : {{ email.emailId }}</h3>
-        <h3>Name of the email : {{ email.emailName }}</h3>
-        <h3>Url of the email : {{ email.emailUrl }}</h3>
-        <h3>Is that a phishing email ? : {{ email.isPhishing }}</h3> 
-        <h3>Your answer : {{ email.user_rating }}</h3><br><br>
+
+        <div class="iframe">
+          <img src="./assets/email.png" alt="" width="500px">
+        </div>
+        
+        <div class="content">
+          <h3>ID of the email : {{ email.emailId }}</h3>
+          <h3>Name of the email : {{ email.emailName }}</h3>
+          <h3>Url of the email : {{ email.emailUrl }}</h3>
+          <h3>Is that a phishing email ? : {{ email.isPhishing }}</h3> 
+          <h3>Your answer : {{ email.user_rating }}</h3>
+          <h3 
+            v-if="email.user_rating === 'like' && email.isPhishing === false || email.user_rating === 'nope' && email.isPhishing === true"
+          >
+            Votre réponse est fausse, la véritable réponse est : {{ email.isPhishing }}
+          </h3>
+
+          <hr>
+
+          <br><br><br>
+
+        </div>
+
       </div>
+
     </div>
+
   </div>
 </template>
 
@@ -104,7 +125,7 @@ export default {
     this.mock()
   },
   methods: {
-
+    
     /**
      * Permet de récupérer les données d'un fichier JSON et de les ajoutés à une liste 
      */
@@ -135,7 +156,7 @@ export default {
 
           this.offset = 0
 
-        }).catch(error => { console.log(error); })
+      }).catch(error => { console.log(error); })
     },
 
     /**
@@ -161,7 +182,7 @@ export default {
       this.offset++
     },
 
-    /*
+    /**
       Choisit aléatoirement un des strings entre : like et nope
     */
     randRating() {
@@ -227,7 +248,7 @@ body {
 
 body {
   margin: 0;
-  background-color: #20262e;
+  background-color: #fff;
   overflow: auto;
 }
 
@@ -266,7 +287,7 @@ body {
   border-right: 1px solid #111;
   width: 100%;
 }
-
+  
 /* Animated arrow */
 
 .bounce {
@@ -416,6 +437,17 @@ body {
     transform: rotateY(-8deg);
   }
 } */
+
+.result {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.result .content {
+  text-align: center;
+}
 
 @media screen and (max-width: 768px) {
   #app .vue-tinder {
