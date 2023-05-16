@@ -68,35 +68,40 @@
     </div>
     </div>
 
-    <div class="result" v-else>
+    <div v-else>
 
-      <h1>Result list of the Quiz : </h1>
+      <Result :emails = "emails" />
 
-      <div v-for="email in emails" :key="email.id">
+      <!-- 
+        <h1>Result list of the Quiz : </h1>
 
-        <div class="iframe">
-          <img src="./assets/email.png" alt="" width="500px">
+        <div v-for="email in emails" :key="email.id">
+
+          <div class="iframe">
+            <img src="./assets/email.png" alt="" width="500px">
+          </div>
+          
+          <div class="content">
+            <h3>ID of the email : {{ email.emailId }}</h3>
+            <h3>Name of the email : {{ email.emailName }}</h3>
+            <h3>Url of the email : {{ email.emailUrl }}</h3>
+            <h3>Is that a phishing email ? : {{ email.isPhishing }}</h3> 
+            <h3>Your answer : {{ email.user_rating }}</h3>
+            <h3 
+              v-if="email.user_rating === 'like' && email.isPhishing === false || email.user_rating === 'nope' && email.isPhishing === true"
+            >
+              Votre réponse est fausse, la véritable réponse est : {{ email.isPhishing }}
+            </h3>
+
+            <hr>
+
+            <br><br><br>
+
+          </div>
+
         </div>
-        
-        <div class="content">
-          <h3>ID of the email : {{ email.emailId }}</h3>
-          <h3>Name of the email : {{ email.emailName }}</h3>
-          <h3>Url of the email : {{ email.emailUrl }}</h3>
-          <h3>Is that a phishing email ? : {{ email.isPhishing }}</h3> 
-          <h3>Your answer : {{ email.user_rating }}</h3>
-          <h3 
-            v-if="email.user_rating === 'like' && email.isPhishing === false || email.user_rating === 'nope' && email.isPhishing === true"
-          >
-            Votre réponse est fausse, la véritable réponse est : {{ email.isPhishing }}
-          </h3>
 
-          <hr>
-
-          <br><br><br>
-
-        </div>
-
-      </div>
+      -->
 
     </div>
 
@@ -106,11 +111,12 @@
 <script>
 import Tinder from '@/components/vue-tinder/Tinder.vue'
 import axios from 'axios'
+import Result from './components/Result/Result.vue'
 // import source from '@/bing'
 
 export default {
   name: 'App',
-  components: { Tinder },
+  components: { Tinder, Result },
   data: () => ({
     JSONPath: 'mails.json',
     count: 0, // var utiliser pour stocker la tailler du tableau data quand on récupère les données du fichier JSON
