@@ -151,6 +151,7 @@ export default {
               emailUrl: response.data[this.offset].url,
               isPhishing: response.data[this.offset].phishing,
               error: response.data[this.offset].error,
+              result: 0
             })
 
             this.offset++
@@ -160,7 +161,11 @@ export default {
           this.queue = this.queue.concat(list)
           this.emails = this.emails.concat(list)
 
+          this.emails['result'] = 0
+
           this.offset = 0
+
+          console.log(this.emails.length);
 
       }).catch(error => { console.log(error); })
     },
@@ -183,6 +188,13 @@ export default {
 
       if(this.emails[this.offset].user_rating === 'super') { this.emails[this.offset].user_rating = this.randRating() }
 
+      /*
+        Pour chaque bonne réponses ajoute +1 au resultat
+      */
+      if(this.emails[this.offset].isPhishing === true && this.emails[this.offset].user_rating === 'like' || this.emails[this.offset].isPhishing === false && this.emails[this.offset].user_rating === 'nope') {
+        this.emails['result']++
+      }
+
       this.history.push(item.item)
 
       this.offset++
@@ -194,6 +206,23 @@ export default {
     randRating() {
       const rating = Math.floor(Math.random() * 2) === 0
       return rating ? "like" : "nope"
+    },
+
+    /**
+     * Permet de calculer le resultat du quiz
+     */
+    getResult() {
+      const result = 0
+
+      this.emails.forEach(email => {
+       
+        if(email.isPhishing === true && email.user_rating === 'like' || email.isPhishing === false && email.user_rating === 'nope') {
+          console.log(email);
+          result++
+          console.log(result);
+        }
+
+      });
     },
 
     /**
@@ -247,6 +276,11 @@ export default {
 </script>
 
 <style>
+* {
+  /* margin: 0;
+  padding: 0; */
+}
+
 html,
 body {
   height: 100%;
