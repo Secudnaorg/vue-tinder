@@ -4,20 +4,23 @@
         "name": "",
         "url": "https://chris-973.github.io/iframe/1",
         "phishing": false,
-        "error" : ""
+        "error" : "",
+        "tips": "Le tips de la première question "
     },
     {
         "id": 2,
         "name": "",
         "url": "https://chris-973.github.io/iframe/2",
         "phishing": true,
-        "error" : ""
+        "error" : "",
+        "tips": "Le tips de la seconde question"
     },
     {
         "id": 3,
         "name": "",
         "url": "https://chris-973.github.io/iframe/3",
         "phishing": true,
-        "error" : ""
+        "error" : "",
+        "tips": "Le tips de la troisième question"
     }
 ]
