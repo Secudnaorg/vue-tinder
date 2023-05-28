@@ -5,10 +5,10 @@
         <div class="title">Résultats :</div>
         <div v-for="email in emails" :key="email.id">
             <div class="emails">
-                <div class="email">
+                <div class="email" @click="emailIconClick(email.emailId)">
 
                     <div class="email_img">
-                        <img src="../../assets/result_logo.png" alt="" @click="emailIconClick(email.emailId)">
+                        <img src="../../assets/result_logo.png" alt="">
                     </div>
 
                     <div class="email_content">

@@ -71,14 +71,13 @@
 
                 <img src="~img/rewind.png" @click="decide('rewind')" />
                 <img src="~img/nope.png" @click="decide('nope')" />
-                <img src="~img/super-like.png" @click="decide('super')" />
                 <img src="~img/like.png" @click="decide('like')" />
                 <img src="~img/help.png" @click="decide('help')" />
 
             </div>
 
-            <div class="bars">
-
+            <div class="progress-bar">
+              <div class="progress-bar-fill" :style="fillStyle"></div>
             </div>
 
         </div>
@@ -142,8 +141,15 @@ import { ok } from 'assert'
       emails: [],
       offset: 0, // cmpt globale
       history: [],
-      ok: true // bool pour afficher les resultats du quiz
+      ok: true, // bool pour afficher les resultats du quiz
+      progressBarWidth: 0,
     }),
+
+    computed: {
+      fillStyle() {
+        return `width: ${this.progressBarWidth}%`;
+      },
+    },
 
     created() {
       this.mock()
@@ -218,6 +224,10 @@ import { ok } from 'assert'
             this.history.push(item.item)
 
             this.offset++
+
+             // Mettez à jour la barre de progression
+            const progressStep = this.emails.length * 10;
+            this.progressBarWidth += progressStep;
         },
 
         /**
@@ -257,7 +267,11 @@ import { ok } from 'assert'
 
             if (this.history.length) {
                 this.$refs.tinder.rewind(this.history.splice(-Math.ceil(Math.random()))) // rewind la queue des emails afficher de 1
+                const progressStep = this.emails.length * 10;
+                this.progressBarWidth -= progressStep;
+                console.log(this.emails.length);
             }
+            
 
             /* Métode rewind de base
 
@@ -291,7 +305,8 @@ import { ok } from 'assert'
             } 
         
         }
-    }
+    },
+
   }
   </script>
 
@@ -525,6 +540,26 @@ import { ok } from 'assert'
     #app .vue-tinder {
       width: 800px;
     }
+  }
+  
+  .progress-bar {
+  /* width: 100%;
+  height: 20px; */
+  background-color: #ccc;
+
+    position: absolute;
+    bottom: -0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 10px;
+    width: 50%;
+    /* background-color: red; */
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #FF6B6B, #FF8989);
+    transition: width 0.5s ease-in-out;
   }
   
   </style>
