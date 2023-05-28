@@ -3,35 +3,36 @@
 
         <div class="menu">
         <div class="title">Résultats :</div>
-        <div v-for="email in emails" :key="email.id">
-            <div class="emails">
-                <div class="email" @click="emailIconClick(email.emailId)">
+        <div class="emails">
+            <div v-for="email in emails" :key="email.id" >
+                    <div class="email" :class="{ 'active': email.emailId === selectedEmailId }" @click="emailIconClick(email.emailId)">
 
-                    <div class="email_img">
-                        <img src="../../assets/result_logo.png" alt="">
-                    </div>
+                        <div class="email_img">
+                            <img src="../../assets/result_logo.png" alt="">
+                        </div>
 
-                    <div class="email_content">
+                        <div class="email_content">
 
-                        <div class="email_title">
-                            <div class="email_title_text">
-                                Question {{ email.emailId }} :
+                            <div class="email_title">
+                                <div class="email_title_text">
+                                    Question {{ email.emailId }} :
+                                </div>
+                                <div class="img_title_icon" v-if="email.isPhishing === true && email.user_rating === 'like' || email.isPhishing === false && email.user_rating === 'nope'">
+                                    <img src="../../assets/true.png" alt="">
+                                </div>
+                                <div class="img_title_icon" v-else>
+                                    <img src="../../assets/false.png" alt="">
+                                </div>
                             </div>
-                            <div class="img_title_icon" v-if="email.isPhishing === true && email.user_rating === 'like' || email.isPhishing === false && email.user_rating === 'nope'">
-                                <img src="../../assets/true.png" alt="">
-                            </div>
-                            <div class="img_title_icon" v-else>
-                                <img src="../../assets/false.png" alt="">
+
+                            <div class="email_paragraph">
+                                Vous avez répondu <span v-if="email.user_rating == 'like'">Vrai</span><span v-else>Faux</span> à cette question
                             </div>
                         </div>
 
-                        <div class="email_paragraph">
-                            Vous avez répondu <span v-if="email.user_rating == 'like'">Vrai</span><span v-else>Faux</span> à cette question
-                        </div>
                     </div>
 
-                </div>
-
+                
             </div>
         </div>
     </div>
@@ -55,7 +56,6 @@
                         class="iframeCart"
                         :src = URLemail
                         frameborder="0"
-                        style="width: 100%; height: 400px;"
                         scrolling="yes"
                     >
                     </iframe>
@@ -63,7 +63,7 @@
 
             </div>
 
-            <div class="resultat_tips">  
+            <!-- <div class="resultat_tips">  
                 <div class="resultat_tips_icon">
                     <img src="../../assets/tips_icon.png" alt="">
                 </div> 
@@ -71,7 +71,7 @@
                     {{ TipsEmail }}
                 </div>
                 
-            </div>
+            </div> -->
         </div>
         
     </div>
@@ -100,7 +100,8 @@ export default {
 
     data: () => ({
         URLemail: "https://chris-973.github.io/iframe/1",
-        TipsEmail: ""
+        TipsEmail: "",
+        selectedEmailId: 1
     }),
 
     methods: {
@@ -108,8 +109,12 @@ export default {
         emailIconClick(emailId) {
             this.URLemail = 'https://chris-973.github.io/iframe/' + emailId
             this.TipsEmail = this.emails[emailId - 1].tips
+
+            this.selectedEmailId = emailId;
+
+            console.log(this.selectedEmailId);
             
-        }
+        },
     }
 }  
 
@@ -121,25 +126,29 @@ export default {
 /* ///////// MENU //////////// */
 
 .menu {
-    padding: 20px 10px 0 10px;
-    width: 40%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
 }
+
+
 .title {
     font-size: 45px;
     font-weight: 500;
     margin-bottom: 30px;
-    color: #EB535F;
 }
+
 
 .email_img img {
     width: 150px;
 }
 .email {
-    display: flex;
-    align-items: center;
-    padding: 0 0 50px 0;
-    gap: 20px;
-    width: 500px;
+    transition: all .3s ease-in-out;
+    width: 100%;
+}
+.email.active {
+    transition: all .3s ease-in-out;
+    background-color: #EDF4F6;
 }
 .email_content {
     display: flex;
@@ -172,14 +181,16 @@ export default {
 
 .resultat_content {
     display: flex;
-    justify-content: space-between;
     background-color: #EDF4F6;
-    width: 80%;
+    width: 100%;
     height: 100vh;
 }
 .resultat_iframe {
     /* position: relative; */
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .resutat_iframe_buttons {
     /* position: absolute;
@@ -195,6 +206,11 @@ export default {
     padding: 10px;
     border-radius: 15px;
     color: #fff;
+}
+
+.resultat_iframe_cart iframe{
+    width: 800px;
+    height: 800px;
 }
 
 .resultat_tips {

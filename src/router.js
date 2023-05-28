@@ -6,6 +6,9 @@ import Accueil from './components/Accueil.vue';
 import Game from './components/Game.vue';
 import Result from './components/Result/Result.vue';
 
+import VueModal from 'vue-js-modal';
+
+Vue.use(VueModal)
 Vue.use(VueRouter);
 
 const routes = [
