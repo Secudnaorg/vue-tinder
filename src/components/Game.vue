@@ -369,8 +369,6 @@ body {
 
 .iframe {
   /* background-color: red; */
-  border-left: 1px solid #111;
-  border-right: 1px solid #111;
   width: 100%;
 }
 
@@ -655,4 +653,10 @@ body {
 
 */
 
+@media screen and (max-width: 850px) {
+  #app .vue-tinder {  
+    /* display: none; */
+    width: 600px;
+  }
+}
 </style>

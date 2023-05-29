@@ -1,7 +1,7 @@
 <template>
     <div class="resultat">
 
-        <div class="menu">
+        <div class="menu" :class="{ 'responsive-menu': isMenuActive }">
         <div class="title">Results of the quiz :</div>
         <div class="emails">
 
@@ -54,8 +54,10 @@
             </div>
         </div>
     </div>
-
         <div class="resultat_content">
+            <div class="responsive-btn" @click="toggleMenuClass">
+                X
+            </div>
             <div class="resultat_iframe">
 
                 <div class="title"></div>
@@ -118,7 +120,8 @@ export default {
     data: () => ({
         URLemail: "https://chris-973.github.io/iframe/1",
         selectedEmailId: 1,
-        isModalOpen: false
+        isModalOpen: false,
+        isMenuActive: false
     }),
 
     methods: {
@@ -144,6 +147,10 @@ export default {
         closeModal() {
             this.isModalOpen = false;
         },
+
+        toggleMenuClass() {
+            this.isMenuActive = !this.isMenuActive;
+        }
     }
 }  
 
@@ -278,8 +285,16 @@ export default {
 }
 
 @media screen and (max-width: 850px) {
+    .resultat_content {
+        /* width: 100% */
+    }
+    .menu.responsive-menu {
+        transform: translateX(0);
+    }
     .menu {
-        width: 90%;
+        /* position: absolute; */
+        /* width: 100%; */
+        transform: translateX(-100%);
     }
     .title {
         font-size: 30px;
