@@ -2,13 +2,28 @@
     <div class="resultat">
 
         <div class="menu">
-        <div class="title">Résultats :</div>
+        <div class="title">Results of the quiz :</div>
         <div class="emails">
+
+            <div class="modal" v-if="isModalOpen">
+            <div class="modal-content">
+                <span class="close" @click="closeModal">&times;</span>
+                <img src="../../assets/tips_icon.png" alt="" width="100px" style="border-radius: 50%;">
+                <p>
+                    to spot phishing emails and avoid fraud attempts, please follow this advice :
+                </p>
+                <p style="font-style: italic;">
+                    {{ emails[selectedEmailId - 1].tips }}
+                </p>
+            </div>
+            </div>
+
             <div v-for="email in emails" :key="email.id" >
+
                     <div class="email" :class="{ 'active': email.emailId === selectedEmailId }" @click="emailIconClick(email.emailId)">
 
                         <div class="email_img">
-                            <img src="../../assets/result_logo.png" alt="">
+                            <img src="../../assets/sncf-logo.png" alt="">
                         </div>
 
                         <div class="email_content">
@@ -18,15 +33,18 @@
                                     Question {{ email.emailId }} :
                                 </div>
                                 <div class="img_title_icon" v-if="email.isPhishing === true && email.user_rating === 'like' || email.isPhishing === false && email.user_rating === 'nope'">
-                                    <img src="../../assets/true.png" alt="">
+                                    <img src="../../assets/happy_logo.png" alt="">
                                 </div>
                                 <div class="img_title_icon" v-else>
-                                    <img src="../../assets/false.png" alt="">
+                                    <img src="../../assets/not-happy_logo.png" alt="">
                                 </div>
                             </div>
 
                             <div class="email_paragraph">
-                                Vous avez répondu <span v-if="email.user_rating == 'like'">Vrai</span><span v-else>Faux</span> à cette question
+                                You answered <span v-if="email.user_rating == 'like'">True</span><span v-else>False</span> to this question
+                            </div>
+                            <div class="email_subparagraph" v-if="email.isPhishing === true && email.user_rating === 'nope' || email.isPhishing === false && email.user_rating === 'like'">
+                                For a tip <span @click="showModal()">click here</span>
                             </div>
                         </div>
 
@@ -79,41 +97,52 @@
 
 <script>
 
-import Menu from './Menu.vue';
 import axios from 'axios'
 
 export default {
     name: 'Result',
-    components: { Menu },
+    components: { },
 
     props: {
         emails: {}
     },
 
-    created() {
-        if (this.emails.length > 0) {
-            this.TipsEmail = this.emails[0].tips;
-        } else {
-            this.TipsEmail = "Cliquez sur une icon pour obtenir un tips"
-        }
-    },
+    // created() {
+    //     if (this.emails.length > 0) {
+    //         this.TipsEmail = this.emails[0].tips;
+    //     } else {
+    //         this.TipsEmail = "Cliquez sur une icon pour obtenir un tips"
+    //     }
+    // },
 
     data: () => ({
         URLemail: "https://chris-973.github.io/iframe/1",
-        TipsEmail: "",
-        selectedEmailId: 1
+        selectedEmailId: 1,
+        isModalOpen: false
     }),
 
     methods: {
-
+        
+        /**
+         * Allows you to change the mail displayed when the section is clicked with the emailID
+         */
         emailIconClick(emailId) {
             this.URLemail = 'https://chris-973.github.io/iframe/' + emailId
-            this.TipsEmail = this.emails[emailId - 1].tips
+            this.selectedEmailId = emailId; 
+        },
 
-            this.selectedEmailId = emailId;
+        /**
+         * Displays the tips modal
+         */
+        showModal() {
+            this.isModalOpen = true;
+        },
 
-            console.log(this.selectedEmailId);
-            
+        /**
+         * hides the tips modal
+         */
+        closeModal() {
+            this.isModalOpen = false;
         },
     }
 }  
@@ -128,21 +157,31 @@ export default {
 .menu {
     display: flex;
     flex-direction: column;
-    padding: 0;
+    width: 40%;
 }
 
 
 .title {
     font-size: 45px;
     font-weight: 500;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+    color: #EB535F;
+    padding: 20px 0 20px 20px;
 }
 
 
 .email_img img {
     width: 150px;
+    /* border-radius: 0%; */
 }
 .email {
+    display: flex;
+    align-items: center;
+    padding: 0 0 50px 0;
+    gap: 20px;
+    width: 500px;
+    padding: 20px;
+
     transition: all .3s ease-in-out;
     width: 100%;
     cursor: pointer;
@@ -170,8 +209,19 @@ export default {
     font-size: 17px;
 }
 .email_paragraph span {
-    font-weight: 700;
+    /* font-weight: 700; */
     font-size: 20px;
+    color: #EB535F;
+}
+
+.email_subparagraph {
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.email_subparagraph span {
+    color: #EB535F;
+    
 }
 
 /* //////////////////////////////////// */
@@ -226,4 +276,52 @@ export default {
 .resultat_tips_text {
     max-width: 200px;
 }
+
+@media screen and (max-width: 850px) {
+    .menu {
+        width: 90%;
+    }
+    .title {
+        font-size: 30px;
+    }
+
+    .email_img img{
+        width: 100px;
+    }
+
+    .email_title .email_title_text {
+        font-size: 20px;
+    }
+
+    .email_title .img_title_icon img{
+        width: 50px;
+    }
+
+    .email_content .email_paragraph {
+        font-size: 14px;
+    }
+
+    .email_paragraph span {
+        font-size: 16px;
+    }
+
+    .email_content .email_subparagraph {
+        font-size: 14px;
+    }
+    .resultat_content {
+        position: relative;
+    }
+    .resutat_iframe_button {
+        font-size: 14px;
+    }
+    .resultat_iframe_cart iframe{
+        position: absolute;
+        right: 0;
+        /* background-color: red; */
+        max-width: 400px;
+        max-height: 500px;
+
+    }
+}
+
 </style>

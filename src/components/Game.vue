@@ -6,10 +6,12 @@
         <div class="modal" v-if="isModalOpen">
           <div class="modal-content">
             <span class="close" @click="closeModal">&times;</span>
-            <h2>Astuce : </h2>
+            <img src="../assets/tips_icon.png" alt="" width="100px" style="border-radius: 50%;">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                to spot phishing emails and avoid fraud attempts, please follow this advice :
             </p>
+            <p style="font-style: italic;">
+            {{ emails[offset].tips }}</p>
           </div>
         </div>
         <!-- 
