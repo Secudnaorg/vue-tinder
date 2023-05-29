@@ -145,6 +145,7 @@ export default {
 .email {
     transition: all .3s ease-in-out;
     width: 100%;
+    cursor: pointer;
 }
 .email.active {
     transition: all .3s ease-in-out;

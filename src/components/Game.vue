@@ -2,17 +2,27 @@
   <div class="game">
 
     <div key="1" v-if="ok">
-
-      <Tinder ref="tinder" key-name="emailId" :queue.sync="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
-
-     
-          <div class="modal" v-show="showModal">
+      <template>
+        <div class="modal" v-if="isModalOpen">
+          <div class="modal-content">
+            <span class="close" @click="closeModal">&times;</span>
+            <h2>Astuce : </h2>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </p>
+          </div>
+        </div>
+        <!-- 
+          <div class="modal" v-if="isModalOpen">
             <div class="modal-content">
-              <!-- Contenu de votre modal -->
-              <p>Tu veux un indice ?</p>
+              <span class="close" @click="closeModal">&times;</span>
+              <h2>Mon Modal</h2>
+              <p>Contenu du modal...</p>
             </div>
           </div>
-          
+         -->
+      </template>
+      <Tinder ref="tinder" key-name="emailId" :queue.sync="queue" :max="3" :offset-y="10" allow-down @submit="onSubmit">
         <template slot-scope="email">
           <div class="pic">
 
@@ -132,7 +142,7 @@ export default {
     history: [],
     ok: true, // bool pour afficher les resultats du quiz
     progressBarWidth: 0,
-    showModal: false
+    isModalOpen: false
   }),
 
   computed: {
@@ -220,6 +230,13 @@ export default {
       this.progressBarWidth += progressStep;
     },
 
+    showModal() {
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
+
     /**
         Choisit aléatoirement un des strings entre : like et nope
     */
@@ -290,8 +307,8 @@ export default {
 
       } else if (choice === 'help') {
         console.log('veux tu un indice?');
-        this.showModal = true;
-        console.log(this.showModal);
+
+        this.showModal()
       } else {
         this.$refs.tinder.decide(choice)
       }
@@ -562,22 +579,78 @@ body {
 /* /////////////////////////////////////////////// */
 
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
+  z-index: 999;
+  background-color: #fff;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 
-  .modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-  }
+.modal-content {
+  position: relative;
+  padding: 20px;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+/* 
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+*/
 
 </style>
