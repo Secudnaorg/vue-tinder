@@ -10333,7 +10333,7 @@
   "resolved" "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2 || ^3.0.0-0", "vue@^2.6.10", "vue@^2.6.11", "vue@^3.2.0":
+"vue@^2 || ^3.0.0-0", "vue@^2.6.10", "vue@^2.6.11", "vue@^2.6.4":
   "integrity" "sha1-9evU+mvShpQD4pqJau1JBEVskSM="
   "resolved" "https://registry.npm.taobao.org/vue/download/vue-2.6.12.tgz"
   "version" "2.6.12"
@@ -10378,10 +10378,10 @@
     "opencollective-postinstall" "^2.0.2"
     "update-notifier" "^4.0.0"
 
-"vuetify@^3.3.0":
-  "integrity" "sha512-4jQRZ6O4vUDlu3+/NZbbrv8dyVtvB5BnLc+NEusYjdj7+27GJSRJoDkkzJMmuM9XkZYFiTgq1vizK/vMSkB+2Q=="
-  "resolved" "https://registry.npmjs.org/vuetify/-/vuetify-3.3.0.tgz"
-  "version" "3.3.0"
+"vuetify@^2.6.14":
+  "integrity" "sha512-nr6wU3uTzhhEPssH23cW0Ee/hCrayp7cjl3nNjM2OmNwiJlV91tZiL1VO3597SqZyjh1xIa+m9J2rpKTSdIlrA=="
+  "resolved" "https://registry.npmjs.org/vuetify/-/vuetify-2.6.14.tgz"
+  "version" "2.6.14"
 
 "watchpack@^1.7.4":
   "integrity" "sha1-bp2lOzyAuy1lCBiPWyAEEIZs0ws="
