@@ -1,82 +1,81 @@
 <template>
     <div class="result-container">
+            <div :class="['menu', { 'responsive': isResponsive }]">
 
-        <div :class="['menu', { 'responsive': isResponsive }]">
+                <h1 class="title">Result of the quiz : {{ emails[emails.length - 1].resultat }}/{{ emails.length }}</h1>
 
-            <h1 class="title">Result of the quiz : {{ emails.result }}/{{ emails.length }}</h1>
-
-            <div class="emails">
-                <div :class="['email', { 'active': email.emailId === selectedEmailId }]" v-for="email in emails"
-                    :key="email.id" @click="emailIconClick(email.emailId)">
-                    <div class="email-icon">
-                        <img src="../assets/sncf-logo.png" alt="email icon">
-                    </div>
-                    <div class="email-content">
-                        <div class="email-title">
-                            <div class="email-title_text">
-                                {{ email.emailName }} :
-                            </div>
-                            <div class="email-title_icon"
-                                v-if="email.isPhishing === true && email.user_rating === 'like' || email.isPhishing === false && email.user_rating === 'nope'">
-                                <img src="../assets/happy_logo.png" alt="email title icon true">
-                            </div>
-                            <div class="email-title_icon" v-else>
-                                <img src="../assets/not-happy_logo.png" alt="">
-                            </div>
-
+                <div class="emails">
+                    <div :class="['email', { 'active': email.emailId === selectedEmailId }]" v-for="email in emails"
+                        :key="email.id" @click="emailIconClick(email.emailId)">
+                        <div class="email-icon">
+                            <img src="../assets/sncf-logo.png" alt="email icon">
                         </div>
+                        <div class="email-content">
+                            <div class="email-title">
+                                <div class="email-title_text">
+                                    {{ email.emailName }} :
+                                </div>
+                                <div class="email-title_icon"
+                                    v-if="email.isPhishing === true && email.user_rating === 'like' || email.isPhishing === false && email.user_rating === 'nope'">
+                                    <img src="../assets/happy_logo.png" alt="email title icon true">
+                                </div>
+                                <div class="email-title_icon" v-else>
+                                    <img src="../assets/not-happy_logo.png" alt="">
+                                </div>
 
-                        <div class="email-paragraph">
-                            You answered <span v-if="email.user_rating == 'like'">True</span><span v-else>False</span> to
-                            this question
-                        </div>
-                        <div class="email-subparagraph"
-                            v-if="email.isPhishing === true && email.user_rating === 'nope' || email.isPhishing === false && email.user_rating === 'like'">
-                            For a tip <span @click="showModal()">click here</span>
+                            </div>
+
+                            <div class="email-paragraph">
+                                You answered <span v-if="email.user_rating == 'like'">True</span><span v-else>False</span> to
+                                this question
+                            </div>
+                            <div class="email-subparagraph"
+                                v-if="email.isPhishing === true && email.user_rating === 'nope' || email.isPhishing === false && email.user_rating === 'like'">
+                                For a tip <span @click="showModal()">click here</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div :class="['menu-btn', { 'responsive': isResponsive }]">
-            <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                @click="toggleMenu">
-                <path d="M5 8H13.75M5 12H19M10.25 16L19 16" stroke="#111" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-        </div>
+            <div :class="['menu-btn', { 'responsive': isResponsive }]">
+                <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    @click="toggleMenu">
+                    <path d="M5 8H13.75M5 12H19M10.25 16L19 16" stroke="#111" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
 
-        <div :class="['result-content', { 'responsive': isResponsive }]">
+            <div :class="['result-content', { 'responsive': isResponsive }]">
 
-            <div class="modal" v-if="isModalOpen">
-                <div class="modal-content">
-                    <span class="close" @click="closeModal">&times;</span>
-                    <img src="../assets/tips_icon.png" alt="" width="100px" style="border-radius: 50%;">
-                    <p>
-                        to spot phishing emails and avoid fraud attempts, please follow this advice :
-                    </p>
-                    <p style="font-style: italic;">
-                        {{ emails[selectedEmailId - 1].tips }}
-                    </p>
+                <div class="modal" v-if="isModalOpen">
+                    <div class="modal-content">
+                        <span class="close" @click="closeModal">&times;</span>
+                        <img src="../assets/tips_icon.png" alt="" width="100px" style="border-radius: 50%;">
+                        <p>
+                            to spot phishing emails and avoid fraud attempts, please follow this advice :
+                        </p>
+                        <p style="font-style: italic;">
+                            {{ emails[selectedEmailId - 1].tips }}
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <div :class="['result-btn', { 'responsive': isResponsive }]" onclick="location.reload()">
-                <a href="">Retry the quiz</a>
-            </div>
+                <div :class="['result-btn', { 'responsive': isResponsive }]">
+                    <router-link to="/game">Retry the quiz</router-link>
+                </div>
 
-            <div :class="['result-iframe', { 'responsive': isResponsive }]">
-                <iframe :src=URLemail frameborder="0" scrolling="yes">
-                </iframe>
+                <div :class="['result-iframe', { 'responsive': isResponsive }]">
+                    <iframe :src=URLemail frameborder="0" scrolling="yes">
+                    </iframe>
+                </div>
+
             </div>
 
         </div>
-
-    </div>
 </template>
 
 <script>
-
+ 
 export default {
     name: 'appResults',
     components: {},
@@ -86,15 +85,24 @@ export default {
     },
 
     data: () => ({
+        lesEmails:[],
         URLemail: "https://chris-973.github.io/iframe/1",
         isResponsive: false,
         selectedEmailId: 1,
         isModalOpen: false
     }),
 
+    mounted() {
+        this.lesEmails =  this.emails
+        console.log(this.lesEmails);
+    },
+
     methods: {
         toggleMenu() {
             this.isResponsive = !this.isResponsive;
+            this.lesEmails.forEach(element => {
+                console.log(element);
+            });
         },
 
         /**
@@ -124,6 +132,7 @@ export default {
 </script>
 
 <style>
+
 .result-container {
     display: flex;
 }
@@ -322,4 +331,5 @@ export default {
     }
 
 }
+
 </style>

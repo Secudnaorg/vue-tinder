@@ -83,11 +83,11 @@
 
         </div>
 
-        <div v-else>
+        <!-- <div v-else>
 
             <Results :emails="emails" />
 
-        </div>
+        </div> -->
 
     </div>
 </template>
@@ -174,18 +174,6 @@ export default {
          * @param {*} item : le mail en tête de liste 
          */
         onSubmit(item) {
-
-            /*
-            Permet d'afficher les resultats si la queue est vide
-            */
-            if (this.queue.length === 0) {
-                this.ok = false
-                // console.log(this.emails);
-                // this.$router.push({ path: '/results', params: { emails: this.emails } });
-                // console.log('test');
-                //   this.$router.push({ name: 'Accueil', params: { emails: this.emails } })
-            }
-
             this.emails[this.offset]['user_rating'] = item['type'] // ajoute le choix de l'utilisateur à l'item de la liste
 
             if (this.emails[this.offset].user_rating === 'super') { this.emails[this.offset].user_rating = this.randRating() }
@@ -197,6 +185,8 @@ export default {
                 this.emails['result']++
             }
 
+            this.emails[this.emails.length - 1]['resultat'] = this.emails['result']
+
             this.history.push(item.item)
 
             this.offset++
@@ -204,6 +194,15 @@ export default {
             // Mettez à jour la barre de progression
             const progressStep = this.emails.length * 10;
             this.progressBarWidth += progressStep;
+
+            /*
+            Permet d'afficher les resultats si la queue est vide
+            */
+            if (this.queue.length === 0) {
+                // this.ok = false
+
+                this.$router.push({ path: 'results', query: { emails: this.emails } });
+            }
         },
 
         showModal() {

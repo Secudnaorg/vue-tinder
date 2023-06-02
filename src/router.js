@@ -16,7 +16,7 @@ const routes = [
   { path: '/', component: Home },
   { path: '/instructions', component: Instructions },
   { path: '/game', component: Game },
-  { path: '/results', component: Results, props: true },
+  { path: '/results', component: Results, props: (route) => ({ emails: route.query.emails }) },
   { path: '*', redirect: '/' }
 ];
 
